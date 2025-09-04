@@ -1,4 +1,3 @@
-import React from 'react';
 import { useInView } from '../hooks/useInView';
 import { Code2, Lightbulb, Target, Users } from 'lucide-react';
 

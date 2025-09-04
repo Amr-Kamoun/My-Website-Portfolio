@@ -1,72 +1,88 @@
-import React, { useState } from 'react';
-import { useInView } from '../hooks/useInView';
-import { Mail, Phone, MapPin, Send, Github, Linkedin, Twitter } from 'lucide-react';
+import { useState } from 'react'
+import type React from 'react'
+import { useInView } from '../hooks/useInView'
+import { Mail, Phone, MapPin, Send } from 'lucide-react'
+import { FaGithub, FaLinkedin, FaXTwitter } from 'react-icons/fa6'
+
+
+type FormData = {
+  name: string
+  email: string
+  subject: string
+  message: string
+}
 
 const Contact = () => {
-  const [ref, isInView] = useInView({ threshold: 0.2 });
-  const [formData, setFormData] = useState({
+  const [ref, isInView] = useInView({ threshold: 0.2 })
+  const [formData, setFormData] = useState<FormData>({
     name: '',
     email: '',
     subject: '',
-    message: ''
-  });
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitMessage, setSubmitMessage] = useState('');
+    message: '',
+  })
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [submitMessage, setSubmitMessage] = useState('')
 
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
-  };
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target
+    setFormData(prev => ({ ...prev, [name]: value }))
+  }
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-    
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    setIsSubmitting(true)
+
     // Simulate form submission
     setTimeout(() => {
-      setIsSubmitting(false);
-      setSubmitMessage('Thank you! Your message has been sent successfully.');
-      setFormData({ name: '', email: '', subject: '', message: '' });
-      
+      setIsSubmitting(false)
+      setSubmitMessage('Thank you! Your message has been sent successfully.')
+      setFormData({ name: '', email: '', subject: '', message: '' })
+
       setTimeout(() => {
-        setSubmitMessage('');
-      }, 5000);
-    }, 2000);
-  };
+        setSubmitMessage('')
+      }, 5000)
+    }, 2000)
+  }
 
   const contactInfo = [
     {
       icon: Mail,
       title: 'Email',
       details: 'amr.kamoun@email.com',
-      link: 'mailto:amr.kamoun@email.com'
+      link: 'mailto:amr.kamoun@email.com',
     },
     {
       icon: Phone,
       title: 'Phone',
       details: '+1 (555) 123-4567',
-      link: 'tel:+15551234567'
+      link: 'tel:+15551234567',
     },
     {
       icon: MapPin,
       title: 'Location',
       details: 'San Francisco, CA',
-      link: '#'
-    }
-  ];
+      link: '#',
+    },
+  ] as const
 
-  const socialLinks = [
-    { icon: Github, href: '#', label: 'GitHub' },
-    { icon: Linkedin, href: '#', label: 'LinkedIn' },
-    { icon: Twitter, href: '#', label: 'Twitter' }
-  ];
+const socialLinks = [
+  { icon: FaGithub,  href: '#', label: 'GitHub' },
+  { icon: FaLinkedin, href: '#', label: 'LinkedIn' },
+  { icon: FaXTwitter, href: '#', label: 'Twitter' },
+] as const
+
 
   return (
     <section id="contact" className="py-20 px-4 relative">
       <div className="max-w-7xl mx-auto">
-        <div ref={ref} className={`transition-all duration-1000 ${isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+        <div
+          ref={ref}
+          className={`transition-all duration-1000 ${
+            isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+          }`}
+        >
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold mb-4">
               <span className="bg-gradient-to-r from-cyan-400 to-purple-600 bg-clip-text text-transparent">
@@ -75,24 +91,26 @@ const Contact = () => {
             </h2>
             <div className="w-24 h-1 bg-gradient-to-r from-cyan-400 to-purple-600 mx-auto rounded-full"></div>
             <p className="text-gray-400 mt-4 max-w-2xl mx-auto">
-              I'm always open to discussing new opportunities and interesting projects. 
-              Let's connect and create something amazing together.
+              I&apos;m always open to discussing new opportunities and interesting projects.
+              Let&apos;s connect and create something amazing together.
             </p>
           </div>
 
           <div className="grid lg:grid-cols-2 gap-12 items-start">
             {/* Contact Information */}
-            <div className={`space-y-8 ${isInView ? 'animate-fade-in-up' : 'opacity-0'}`}>
+            <div className={`${isInView ? 'animate-fade-in-up' : 'opacity-0'}`}>
               <div>
-                <h3 className="text-2xl font-bold text-white mb-6">Let's talk about your project</h3>
+                <h3 className="text-2xl font-bold text-white mb-6">
+                  Let&apos;s talk about your project
+                </h3>
                 <p className="text-gray-400 text-lg leading-relaxed mb-8">
-                  Whether you have a question about development, need help with a project, 
-                  or just want to say hello, I'd love to hear from you.
+                  Whether you have a question about development, need help with a project,
+                  or just want to say hello, I&apos;d love to hear from you.
                 </p>
               </div>
 
               <div className="space-y-6">
-                {contactInfo.map((item, index) => (
+                {contactInfo.map((item) => (
                   <a
                     key={item.title}
                     href={item.link}
@@ -112,14 +130,14 @@ const Contact = () => {
               <div className="pt-8">
                 <h4 className="text-white font-medium mb-4">Connect with me</h4>
                 <div className="flex items-center gap-4">
-                  {socialLinks.map((social, index) => (
+                  {socialLinks.map((social) => (
                     <a
                       key={social.label}
                       href={social.href}
                       className="p-3 bg-gray-800 rounded-lg hover:bg-gradient-to-r hover:from-cyan-500 hover:to-purple-600 transition-all duration-300 transform hover:scale-110 group"
                       aria-label={social.label}
                     >
-                      <social.icon className="w-6 h-6 text-gray-400 group-hover:text-white transition-colors" />
+                      <social.icon size={24} className="text-gray-400 group-hover:text-white transition-colors" />
                     </a>
                   ))}
                 </div>
@@ -191,7 +209,7 @@ const Contact = () => {
                         value={formData.message}
                         onChange={handleChange}
                         required
-                        rows="6"
+                        rows={6}
                         className="w-full px-4 py-3 bg-gray-700 text-white rounded-lg border border-gray-600 focus:border-cyan-400 focus:outline-none focus:ring-2 focus:ring-cyan-400/20 transition-all resize-none"
                         placeholder="Tell me about your project..."
                       ></textarea>
@@ -232,7 +250,7 @@ const Contact = () => {
       <div className="absolute top-1/4 left-10 w-64 h-64 bg-cyan-400/5 rounded-full blur-3xl"></div>
       <div className="absolute bottom-1/4 right-10 w-80 h-80 bg-purple-600/5 rounded-full blur-3xl"></div>
     </section>
-  );
-};
+  )
+}
 
-export default Contact;
+export default Contact
